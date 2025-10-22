@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import Navbar from "./Components/Navbar";
+import MovieList from "./Components/MovieList";
+import MovieDetails from "./Components/MovieDetails";
+import SeatSelection from "./Components/SeatSelection";
+import Summary from "./Components/Summary";
+import Confirmation from "./Components/Confirmation";
+import { BookingProvider } from "./BookingContext";
 
-function App() {
+function Home() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="mt-4 text-center">
+      <h1>Welcome to MovieBook</h1>
+      <p className="lead">Browse movies, pick a showtime, choose seats, and book online.</p>
+      <Link to="/movies" className="btn btn-primary">Browse Movies</Link>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BookingProvider>
+      <Navbar />
+      <Container>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies" element={<MovieList />} />
+          <Route path="/movies/:id" element={<MovieDetails />} />
+          <Route path="/book/:id" element={<SeatSelection />} />
+          <Route path="/summary" element={<Summary />} />
+          <Route path="/confirmation" element={<Confirmation />} />
+          {/* Fallback route */}
+          <Route path="*" element={<div className="mt-4"><h3>Page not found</h3></div>} />
+        </Routes>
+      </Container>
+    </BookingProvider>
+  );
+}
