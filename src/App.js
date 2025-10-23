@@ -32,7 +32,7 @@ export default function App() {
           <Route path="/summary" element={<Summary />} />
           <Route path="/confirmation" element={<Confirmation />} />
           {/* Fallback route */}
-          <Route path="*" element={<div className="mt-4"><h3>Page not found</h3></div>} />
+          <Route path="*" element={<Summary/>}/>
         </Routes>
       </Container>
     </BookingProvider>

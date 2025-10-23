@@ -1,28 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { movies, showtimes } from "../data";
 import { useBooking } from "../BookingContext";
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Spinner, Alert } from "react-bootstrap";
 
 export default function MovieDetails() {
   const { id } = useParams();
-  const movie = movies.find((m) => m.id === id);
-  const navigate = useNavigate();
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { update } = useBooking();
+  const navigate = useNavigate();
+
+  const API_URL = `https://api.themoviedb.org/3/movie/${id}?api_key=c45a857c193f6302f2b5061c3b85e743&language=en-US`;
+  const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 
   const today = new Date().toISOString().slice(0, 10);
-  const [date, setDate] = useState(Object.keys(showtimes[id] || {})?.[0] || today);
-  const [time, setTime] = useState((showtimes[id] && showtimes[id][date] && showtimes[id][date][0]) || "");
+  const [date, setDate] = useState(today);
+  const [time, setTime] = useState("19:30");
 
-  // whenever date changes, set default time if available
-  React.useEffect(() => {
-    if (showtimes[id] && showtimes[id][date]) {
-      setTime(showtimes[id][date][0]);
-    } else {
-      setTime("");
+  useEffect(() => {
+    async function fetchDetails() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Failed to fetch movie details");
+        const data = await res.json();
+        setMovie(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, [date, id]);
+    fetchDetails();
+  }, [id]);
 
+  if (loading) return <div className="text-center mt-5"><Spinner animation="border" /></div>;
+  if (error) return <Alert variant="danger">{error}</Alert>;
   if (!movie) return <p>Movie not found.</p>;
 
   const handleProceed = () => {
@@ -33,49 +46,33 @@ export default function MovieDetails() {
   return (
     <Row className="mt-4">
       <Col md={4}>
-        <Card className="shadow-sm">
-          <Card.Img variant="top" src={movie.poster} />
+        <Card>
+          <Card.Img src={movie.poster_path ? IMG_BASE + movie.poster_path : "https://via.placeholder.com/500x750"} />
         </Card>
       </Col>
       <Col md={8}>
         <h2>{movie.title}</h2>
-        <p><strong>Genre:</strong> {movie.genre} &nbsp; <strong>Release:</strong> {movie.releaseDate}</p>
-        <p>{movie.synopsis}</p>
-        <p><strong>Cast:</strong> {movie.cast}</p>
-        <p><strong>Director:</strong> {movie.director}</p>
+        <p><strong>Release Date:</strong> {movie.release_date}</p>
+        <p><strong>Rating:</strong> ⭐ {movie.vote_average}</p>
+        <p>{movie.overview}</p>
 
         <Card className="p-3 mt-3">
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Select Date</Form.Label>
-              <Form.Control type="date" value={date} min={today} onChange={(e) => setDate(e.target.value)} />
+              <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} />
             </Form.Group>
-
             <Form.Group className="mb-3">
-              <Form.Label>Showtimes</Form.Label>
-              <div>
-                {(showtimes[id] && showtimes[id][date]) ? (
-                  showtimes[id][date].map((t) => (
-                    <Button
-                      key={t}
-                      variant={t === time ? "success" : "outline-primary"}
-                      className="me-2 mb-2"
-                      onClick={() => setTime(t)}
-                    >
-                      {t}
-                    </Button>
-                  ))
-                ) : (
-                  <div className="text-muted">No showtimes available for selected date.</div>
-                )}
-              </div>
+              <Form.Label>Select Showtime</Form.Label>
+              <Form.Select value={time} onChange={(e) => setTime(e.target.value)}>
+                <option>10:00</option>
+                <option>13:00</option>
+                <option>16:30</option>
+                <option>19:30</option>
+                <option>22:00</option>
+              </Form.Select>
             </Form.Group>
-
-            <div className="d-flex">
-              <Button variant="primary" disabled={!time} onClick={handleProceed}>
-                Proceed to Seat Selection
-              </Button>
-            </div>
+            <Button onClick={handleProceed}>Proceed to Seat Selection</Button>
           </Form>
         </Card>
       </Col>

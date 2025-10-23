@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useBooking } from "../BookingContext";
-import { createSeatMap, seatMaps } from "../data";
 import { Button, Row, Col, Card } from "react-bootstrap";
 
-/*
- Seat grid UI:
- - seatMaps stored in data.seatMaps keyed by `${movieId}_${date}_${time}`
- - seat object: { id: 'A1', booked: bool }
-*/
+/* === Helpers defined FIRST to avoid ESLint errors === */
 
-function keyFor(movieId, date, time) {
-  return `${movieId}_${date}_${time}`;
-}
+// Generate a seat map (e.g., 7 rows x 10 columns)
+const createSeatMap = (rows = 7, cols = 10) => {
+  const seats = [];
+  for (let r = 0; r < rows; r++) {
+    const row = [];
+    for (let c = 0; c < cols; c++) {
+      row.push({
+        id: `${String.fromCharCode(65 + r)}${c + 1}`,
+        booked: Math.random() < 0.05 // randomly mark some booked
+      });
+    }
+    seats.push(row);
+  }
+  return seats;
+};
 
+// Store seat maps by movie/date/time in memory
+const seatMaps = {};
+
+const keyFor = (movieId, date, time) => `${movieId}_${date}_${time}`;
+
+/* === Component === */
 export default function SeatSelection() {
   const { id } = useParams();
   const { booking, update } = useBooking();
@@ -22,46 +35,38 @@ export default function SeatSelection() {
   const movie = booking.movie;
   const date = booking.date;
   const time = booking.time;
-  const price = movie ? movie.price : 0;
+  const price = 250; // fixed ticket price
 
-  // if user landed here without selection, redirect to movie page
+  // Redirect if booking data is missing
   useEffect(() => {
-    if (!movie || movie.id !== id || !date || !time) {
+    if (!movie || movie.id !== Number(id) || !date || !time) {
       navigate(`/movies/${id}`);
     }
   }, [movie, id, date, time, navigate]);
 
   const mapKey = keyFor(id, date, time);
-  if (!seatMaps[mapKey]) {
-    seatMaps[mapKey] = createSeatMap(7, 10); // 7 rows (A-G), 10 cols
-  }
+  if (!seatMaps[mapKey]) seatMaps[mapKey] = createSeatMap();
 
   const [seatMap, setSeatMap] = useState(seatMaps[mapKey]);
-  const [selected, setSelected] = useState(booking.seats || []);
-
-  useEffect(() => {
-    // ensure selected seats reflect booking context
-    setSelected(booking.seats || []);
-  }, [booking.seats]);
+  const [selected, setSelected] = useState([]);
 
   const toggleSeat = (r, c) => {
     const seat = seatMap[r][c];
-    if (seat.booked) return; // cannot toggle booked
-    const id = seat.id;
-    const exists = selected.includes(id);
-    const next = exists ? selected.filter((s) => s !== id) : [...selected, id];
-    setSelected(next);
-    update({ seats: next, totalPrice: next.length * price });
+    if (seat.booked) return;
+    const seatId = seat.id;
+    const updated = selected.includes(seatId)
+      ? selected.filter((s) => s !== seatId)
+      : [...selected, seatId];
+    setSelected(updated);
+    update({ seats: updated, totalPrice: updated.length * price });
   };
 
   const handleConfirm = () => {
-    // mark selected as booked in seatMap (simulate finalization)
-    const newMap = seatMap.map((row) =>
+    const updatedMap = seatMap.map((row) =>
       row.map((s) => (selected.includes(s.id) ? { ...s, booked: true } : s))
     );
-    seatMaps[mapKey] = newMap;
-    setSeatMap(newMap);
-    update({ totalPrice: selected.length * price });
+    seatMaps[mapKey] = updatedMap;
+    setSeatMap(updatedMap);
     navigate("/summary");
   };
 
@@ -71,8 +76,7 @@ export default function SeatSelection() {
     <Row className="mt-4">
       <Col md={8}>
         <Card className="p-3">
-          <h4>Select Seats</h4>
-          <p className="text-muted">Click seats to select. Booked seats are disabled.</p>
+          <h4>Select Seats for {movie.title}</h4>
 
           <div style={{ overflowX: "auto" }}>
             <div style={{ display: "inline-block", border: "1px solid #eee", padding: 12 }}>
@@ -81,15 +85,14 @@ export default function SeatSelection() {
                   <div style={{ width: 24, marginRight: 8 }}>{String.fromCharCode(65 + r)}</div>
                   <div style={{ display: "flex" }}>
                     {row.map((seat, c) => {
-                      let cls = "btn btn-sm me-1";
-                      if (seat.booked) cls += " btn-secondary disabled"; // booked
-                      else if (selected.includes(seat.id)) cls += " btn-success"; // selected
-                      else cls += " btn-outline-primary"; // available
-
+                      let btnClass = "btn btn-sm me-1";
+                      if (seat.booked) btnClass += " btn-secondary disabled";
+                      else if (selected.includes(seat.id)) btnClass += " btn-success";
+                      else btnClass += " btn-outline-primary";
                       return (
                         <button
                           key={seat.id}
-                          className={cls}
+                          className={btnClass}
                           style={{ width: 44, height: 36, padding: 0 }}
                           onClick={() => toggleSeat(r, c)}
                         >
@@ -104,29 +107,16 @@ export default function SeatSelection() {
           </div>
 
           <div className="mt-3">
-            <div className="mb-2">
-              <strong>Selected Seats:</strong> {selected.length ? selected.join(", ") : "None"}
-            </div>
-            <div className="mb-3">
-              <strong>Total:</strong> ₹{selected.length * price}
-            </div>
-
-            <Button variant="success" onClick={handleConfirm} disabled={selected.length === 0}>
+            <p><strong>Selected:</strong> {selected.join(", ") || "None"}</p>
+            <p><strong>Total:</strong> ₹{selected.length * price}</p>
+            <Button
+              variant="success"
+              disabled={!selected.length}
+              onClick={handleConfirm}
+            >
               Proceed to Payment
             </Button>
           </div>
-        </Card>
-      </Col>
-
-      <Col md={4}>
-        <Card className="p-3">
-          <h5>Booking Summary</h5>
-          <p><strong>Movie:</strong> {movie.title}</p>
-          <p><strong>Date:</strong> {date}</p>
-          <p><strong>Time:</strong> {time}</p>
-          <p><strong>Seats:</strong> {selected.join(", ") || "None"}</p>
-          <p><strong>Price / seat:</strong> ₹{price}</p>
-          <h5>Payable: ₹{selected.length * price}</h5>
         </Card>
       </Col>
     </Row>
