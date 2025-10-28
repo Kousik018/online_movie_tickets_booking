@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "The Great Adventure",
+    "duration": 120,
+    "totalSeats": 30
+  },
+  {
+    "id": 2,
+    "title": "Comedy Night",
+    "duration": 95,
+    "totalSeats": 24
+  }
+]

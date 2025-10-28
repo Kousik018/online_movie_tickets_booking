@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useBooking } from "../BookingContext";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function Confirmation() {
-  const { booking, reset } = useBooking();
+  const { booking, reset, addToHistory } = useBooking();
+
+  // Save booking to history once confirmed
+  useEffect(() => {
+    if (booking && booking.movie) {
+      addToHistory(booking);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!booking.movie) return <p>No booking found.</p>;
 
@@ -18,8 +26,9 @@ export default function Confirmation() {
         <p><strong>Seats:</strong> {booking.seats.join(", ")}</p>
         <p><strong>Amount Paid:</strong> ₹{booking.totalPrice}</p>
 
-        <div className="mt-3 d-flex justify-content-center">
+        <div className="mt-3 d-flex justify-content-center gap-2">
           <Button variant="primary" as={Link} to="/movies" onClick={reset}>Book More</Button>
+          <Button variant="secondary" as={Link} to="/my-bookings">View My Bookings</Button>
         </div>
       </Card>
     </div>
