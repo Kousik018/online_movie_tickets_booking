@@ -21,7 +21,7 @@ export default function Summary() {
   if (!booking.movie) return <p>No booking in progress.</p>;
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 ">
       <h3>Payment & Confirmation</h3>
       <div className="row">
         <div className="col-md-6">

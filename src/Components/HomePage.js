@@ -4,31 +4,31 @@ import { Container, Row, Col, Button, Card } from "react-bootstrap";
    
 export default function HomePage() {
   return (
-    <div className="bg-black text-white w-100 justify-center" style={{ overflowX: "hidden" }}>
-   {/* Hero Section */}
-<div
-  className="d-flex flex-column align-items-center justify-content-center text-center text-white"
-  style={{
-    height: "90vh",
-    backgroundImage:
-      "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1950&q=80')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-  <div style={{ maxWidth: "700px", padding: "0 20px" }}>
-    <h1 className="display-3 fw-bold mb-4">Book Your Favorite Movies Instantly</h1>
-    <p className="lead mb-4">
-      Discover the latest releases, select your seats, and enjoy the big screen!
-    </p>
-    <Link to="/movies">
-      <Button size="lg" variant="danger">
-        Book Tickets Now
-      </Button>
-    </Link>
-  </div>
-</div>
+    
+    <div className= " container-fluid mt-2  bg-black text-white w-100 justify-center" style={{ overflowX: "hidden" }}>
+      {/* Hero Section */}
+      <div className="d-flex flex-column align-items-center justify-content-center text-center text-white"
+        style={{
+          height: "90vh",
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1950&q=80')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div style={{ maxWidth: "700px", padding: "0 20px" }}>
+          <h1 className="display-3 fw-bold mb-4">Book Your Favorite Movies Instantly</h1>
+          <p className="lead mb-4">
+            Discover the latest releases, select your seats, and enjoy the big screen!
+          </p>
+          <Link to="/movies">
+            <Button size="lg" variant="danger">
+              Book Tickets Now
+            </Button>
+          </Link>
+        </div>
+      </div>
 
 
 
