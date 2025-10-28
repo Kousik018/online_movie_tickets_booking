@@ -9,7 +9,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <div className="d-flex flex-column align-items-center justify-content-center text-center text-white"
         style={{
-          height: "90vh",
+          height: "100vh",
+          
           backgroundImage:
             "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1950&q=80')",
           backgroundSize: "cover",
