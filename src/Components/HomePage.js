@@ -6,27 +6,20 @@ export default function HomePage() {
   return (
     <div className="bg-black text-white w-100 justify-center" style={{ overflowX: "hidden" }}>
    {/* Hero Section */}
-<div className="d-flex flex-column align-items-center justify-content-center text-center text-white ">  </div>
-  
+<div
+  className="d-flex flex-column align-items-center justify-content-center text-center text-white"
   style={{
-    height: "100vh",
-    width: "100vw",
-    margin: 0,
-    padding: 0,
+    height: "90vh",
     backgroundImage:
       "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1950&q=80')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    overflowX: "hidden",
- 
   }}
-
-
-  <div>
-    <h1 className="display-5 fw-bold mb-4 mr-[20rem]" >Browse your move here</h1>
-    
-    <p className="lead mb-4 ">
+>
+  <div style={{ maxWidth: "700px", padding: "0 20px" }}>
+    <h1 className="display-3 fw-bold mb-4">Book Your Favorite Movies Instantly</h1>
+    <p className="lead mb-4">
       Discover the latest releases, select your seats, and enjoy the big screen!
     </p>
     <Link to="/movies">
@@ -35,6 +28,8 @@ export default function HomePage() {
       </Button>
     </Link>
   </div>
+</div>
+
 
 
       {/* Features Section */}
