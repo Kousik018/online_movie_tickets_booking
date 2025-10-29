@@ -11,7 +11,7 @@ import { BookingProvider } from "./BookingContext";
 import HomePage from "./Components/HomePage";
 import MyBookings from "./Components/MyBookings";
 
-
+import Signup from "./Components/Signup";
 
 export default function App() {
   return (
@@ -23,6 +23,8 @@ export default function App() {
           <Route path="/movies" element={<MovieList />} />
           <Route path="/movies/:id" element={<MovieDetails />} />
           <Route path="/book/:id" element={<SeatSelection />} />
+          
+          <Route path="/signup" element={<Signup />} />
           <Route path="/summary" element={<Summary />} />
           <Route path="/confirmation" element={<Confirmation />} />
           {/* Fallback route */}

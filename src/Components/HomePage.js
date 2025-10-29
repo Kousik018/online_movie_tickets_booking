@@ -18,7 +18,7 @@ export default function HomePage() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div style={{ maxWidth: "700px", padding: "0 20px" }}>
+        <div style={{ maxWidth: "1700px", padding: "0 20px" }}>
           <h1 className="display-3 fw-bold mb-4">Book Your Favorite Movies Instantly</h1>
           <p className="lead mb-4">
             Discover the latest releases, select your seats, and enjoy the big screen!

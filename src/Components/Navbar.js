@@ -13,6 +13,7 @@ export default function Navbar() {
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/movies">Movies</Nav.Link>
             <Nav.Link as={Link} to="/my-bookings">My Bookings</Nav.Link>
+            <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>
           </Nav>
         </BsNav.Collapse>
       </Container>
