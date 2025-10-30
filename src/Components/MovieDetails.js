@@ -19,6 +19,10 @@ export default function MovieDetails() {
   const [time, setTime] = useState("19:30");
 
   useEffect(() => {
+  // your code using API_URL
+}, [API_URL]); // Add API_URL to the dependency arra
+
+  useEffect(() => {
     async function fetchDetails() {
       try {
         const res = await fetch(API_URL);
