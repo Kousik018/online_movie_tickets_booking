@@ -18,10 +18,7 @@ export default function MovieDetails() {
   const [date, setDate] = useState(today);
   const [time, setTime] = useState("19:30");
 
-  useEffect(() => {
-  // your code using API_URL
-}, [API_URL]); // Add API_URL to the dependency arra
-
+ 
   useEffect(() => {
     async function fetchDetails() {
       try {
@@ -36,7 +33,7 @@ export default function MovieDetails() {
       }
     }
     fetchDetails();
-  }, [id]);
+  }, [id, API_URL]);
 
   if (loading) return <div className="text-center mt-5"><Spinner animation="border" /></div>;
   if (error) return <Alert variant="danger">{error}</Alert>;
