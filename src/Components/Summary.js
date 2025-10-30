@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useBooking } from "../BookingContext";
 import { useNavigate } from "react-router-dom";
-import { Card, Form, Button } from "react-bootstrap";
+import { Card, Form, Button, Container } from "react-bootstrap";
 
 export default function Summary() {
   const { booking, update } = useBooking();
@@ -11,44 +11,61 @@ export default function Summary() {
 
   const handlePay = (e) => {
     e.preventDefault();
-    // simulate payment success
     const user = { name, email };
     update({ user });
-    // In a real app we'd call a payment API here. Simulate success then navigate
     navigate("/confirmation");
   };
 
   if (!booking.movie) return <p>No booking in progress.</p>;
 
   return (
-    <div className="mt-4 ">
-      <h3>Payment & Confirmation</h3>
-      <div className="row">
-        <div className="col-md-6">
-          <Card className="p-3">
-            <h5>Enter details (simulated payment)</h5>
-            <Form onSubmit={handlePay}>
-              <Form.Group className="mb-2">
-                <Form.Label>Name</Form.Label>
-                <Form.Control value={name} onChange={e => setName(e.target.value)} required />
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label>Email</Form.Label>
-                <Form.Control value={email} onChange={e => setEmail(e.target.value)} type="email" required />
-              </Form.Group>
+    <Container
+      fluid
+      className="d-flex justify-content-center align-items-start"
+      style={{
+        minHeight: "90vh", // slightly less height than full screen
+        backgroundColor: "#f8f9fa",
+        paddingTop: "40px", // smaller top padding
+        paddingBottom: "20px",
+      }}
+    >
+      <Card className="p-4 shadow-sm" style={{ maxWidth: "420px", width: "100%" }}>
+        <h3 className="text-center mb-3">Payment & Confirmation</h3>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Card (simulated)</Form.Label>
-                <Form.Control placeholder="1111 2222 3333 4444" required />
-              </Form.Group>
+        <Form onSubmit={handlePay}>
+          <Form.Group className="mb-3">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Enter your name"
+            />
+          </Form.Group>
 
-              <Button type="submit" variant="primary">Pay ₹{booking.totalPrice}</Button>
-            </Form>
-          </Card>
-        </div>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              required
+              placeholder="Enter your email"
+            />
+          </Form.Group>
 
-        
-      </div>
-    </div>
+          <Form.Group className="mb-4">
+            <Form.Label>Card (simulated)</Form.Label>
+            <Form.Control placeholder="1111 2222 3333 4444" required />
+          </Form.Group>
+
+          <div className="text-center">
+            <Button type="submit" variant="primary">
+              Pay ₹{booking.totalPrice}
+            </Button>
+          </div>
+        </Form>
+      </Card>
+    </Container>
   );
 }

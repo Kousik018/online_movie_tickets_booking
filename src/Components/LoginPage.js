@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Signup() {
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,29 +25,23 @@ function Signup() {
 
     setTimeout(() => {
       setLoading(false);
-      if (email && password.length >= 6) {
-        // Save user in localStorage
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ fname, lname, email, password })
-        );
 
+      // Check localStorage for user
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+
+      if (storedUser && storedUser.email === email && storedUser.password === password) {
         setToast({
           show: true,
-          message: "Signup successful! Redirecting...",
+          message: "Login successful! Redirecting...",
           type: "success",
         });
-
-        setFname("");
-        setLname("");
         setEmail("");
         setPassword("");
-
-        setTimeout(() => navigate("/login"), 1500);
+        setTimeout(() => navigate("/"), 1500);
       } else {
         setToast({
           show: true,
-          message: "Password must be at least 6 characters.",
+          message: "Invalid credentials",
           type: "danger",
         });
       }
@@ -79,38 +70,10 @@ function Signup() {
           className="mb-4 text-center fw-bold"
           style={{ color: "#007bff", letterSpacing: "1px" }}
         >
-          Sign Up
+          Login
         </h2>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label fw-semibold text-primary">
-              First Name
-            </label>
-            <input
-              type="text"
-              className="form-control border-primary-subtle"
-              value={fname}
-              onChange={(e) => setFname(e.target.value)}
-              required
-              placeholder="Enter your first name"
-            />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label fw-semibold text-primary">
-              Last Name
-            </label>
-            <input
-              type="text"
-              className="form-control border-primary-subtle"
-              value={lname}
-              onChange={(e) => setLname(e.target.value)}
-              required
-              placeholder="Enter your last name"
-            />
-          </div>
-
           <div className="mb-3">
             <label className="form-label fw-semibold text-primary">Email</label>
             <input
@@ -123,17 +86,15 @@ function Signup() {
             />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label fw-semibold text-primary">
-              Password
-            </label>
+          <div className="mb-4">
+            <label className="form-label fw-semibold text-primary">Password</label>
             <input
               type="password"
               className="form-control border-primary-subtle"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="At least 6 characters"
+              placeholder="Enter your password"
             />
           </div>
 
@@ -148,7 +109,7 @@ function Signup() {
               border: "none",
             }}
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
@@ -169,4 +130,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

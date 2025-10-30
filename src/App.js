@@ -10,7 +10,7 @@ import Confirmation from "./Components/Confirmation";
 import { BookingProvider } from "./BookingContext";
 import HomePage from "./Components/HomePage";
 import MyBookings from "./Components/MyBookings";
-
+import LoginPage from "./Components/LoginPage"
 import Signup from "./Components/Signup";
 
 export default function App() {
@@ -25,6 +25,7 @@ export default function App() {
           <Route path="/book/:id" element={<SeatSelection />} />
           
           <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginPage/>}/>
           <Route path="/summary" element={<Summary />} />
           <Route path="/confirmation" element={<Confirmation />} />
           {/* Fallback route */}

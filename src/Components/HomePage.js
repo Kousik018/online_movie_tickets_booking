@@ -32,7 +32,6 @@ export default function HomePage() {
       </div>
 
 
-
       {/* Features Section */}
       <Container fluid className="py-5 bg-dark">
         <Row className="text-center g-4 px-5">
