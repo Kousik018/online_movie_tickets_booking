@@ -87,23 +87,7 @@ export default function HomePage() {
         </Row>
       </Container>
 
-      {/* Footer */}
-      <Container fluid className="bg-dark py-4 text-center text-muted">
-        <p className="mb-1">
-          &copy; {new Date().getFullYear()} CineStream — Your Trusted Movie Booking Partner.
-        </p>
-        <p>
-          <Link to="/" className="text-white text-decoration-none me-3">
-            Home
-          </Link>
-          <Link to="/movies" className="text-white text-decoration-none me-3">
-            Movies
-          </Link>
-          <Link to="/my-bookings" className="text-white text-decoration-none">
-            My Bookings
-          </Link>
-        </p>
-      </Container>
+     
     </div>
   );
 }
