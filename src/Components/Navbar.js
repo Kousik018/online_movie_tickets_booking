@@ -5,44 +5,55 @@ import cinestream from "../Images/cinestream.jpg";
 
 export default function Navbar() {
   return (
-    <BsNav bg="dark" variant="dark" expand="lg">
-      <Container>
-        <BsNav.Brand as={Link} to="/" className="d-flex align-items-center">
-          <img
-            src={cinestream}
-            alt="CineStream Logo"
-            width="100"
-            height="100"
-            className="me-2 rounded-circle"
-          />
-        </BsNav.Brand>
-        <BsNav.Toggle aria-controls="nav" />
-        <BsNav.Collapse id="nav">
-          <Nav className="ms-auto fs-5 align-items-center">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/movies">Movies</Nav.Link>
-            <Nav.Link as={Link} to="/my-bookings">My Bookings</Nav.Link>
+    <>
+      {/* Navbar */}
+      <BsNav bg="dark" variant="dark" expand="lg">
+        <Container>
+          <BsNav.Brand as={Link} to="/" className="d-flex align-items-center">
+            <img
+              src={cinestream}
+              alt="CineStream Logo"
+              width="100"
+              height="100"
+              className="me-2 rounded-circle"
+            />
+          </BsNav.Brand>
+          <BsNav.Toggle aria-controls="nav" />
+          <BsNav.Collapse id="nav">
+            <Nav className="ms-auto fs-5 align-items-center">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/movies">Movies</Nav.Link>
+              <Nav.Link as={Link} to="/my-bookings">My Bookings</Nav.Link>
 
-            {/* Buttons for Sign Up and Login */}
-            <Button
-              as={Link}
-              to="/signup"
-              variant="primary"
-              className="ms-2"
-            >
-              Sign Up
-            </Button>
-            <Button
-              as={Link}
-              to="/login"
-              variant="primary"
-              className="ms-2"
-            >
-              Login
-            </Button>
-          </Nav>
-        </BsNav.Collapse>
+              {/* Buttons for Sign Up and Login */}
+              <Button as={Link} to="/signup" variant="primary" className="ms-2">
+                Sign Up
+              </Button>
+              <Button as={Link} to="/login" variant="primary" className="ms-2">
+                Login
+              </Button>
+            </Nav>
+          </BsNav.Collapse>
+        </Container>
+      </BsNav>
+
+      {/* Footer */}
+      <Container fluid className="bg-dark py-4 text-center text-muted">
+        <p className="mb-1">
+          &copy; {new Date().getFullYear()} CineStream — Your Trusted Movie Booking Partner.
+        </p>
+        <p>
+          <Link to="/" className="text-white text-decoration-none me-3">
+            Home
+          </Link>
+          <Link to="/movies" className="text-white text-decoration-none me-3">
+            Movies
+          </Link>
+          <Link to="/my-bookings" className="text-white text-decoration-none">
+            My Bookings
+          </Link>
+        </p>
       </Container>
-    </BsNav>
+    </>
   );
 }
