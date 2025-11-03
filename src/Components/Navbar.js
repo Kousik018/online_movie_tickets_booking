@@ -43,10 +43,10 @@ export default function Navbar() {
 
             {!logged ? (
               <>
-                <Button as={Link} to="/signup" variant="primary" className="ms-2 p-2">
+                <Button as={Link} to="/signup" variant="primary" className="ms-2 px-2">
                   Sign Up
                 </Button>
-                <Button as={Link} to="/login" variant="primary" className="ms-2 p-3">
+                <Button as={Link} to="/login" variant="primary" className="ms-2 px-3 py-2">
                   Login
                 </Button>
               </>
