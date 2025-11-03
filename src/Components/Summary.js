@@ -17,12 +17,12 @@ export default function Summary() {
   };
 
   if (!booking.movie)
-    return <p className="text-center mt-5">No booking in progress.</p>;
+    return <p className="text-center mt-5 ">No booking in progress.</p>;
 
   return (
     <Container
       fluid
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center mt-2"
       style={{
         minHeight: "100vh",
         background: "linear-gradient(135deg, #0b0c10 0%, #1f2833 100%)",

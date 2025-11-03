@@ -59,7 +59,7 @@ function Signup() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center mt-2"
       style={{
         minHeight: "100vh",
         background: "linear-gradient(135deg, #0b0c10 0%, #1f2833 100%)",

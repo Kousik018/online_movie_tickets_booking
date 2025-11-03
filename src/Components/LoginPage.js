@@ -1,20 +1,21 @@
+// src/pages/LoginPage.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Hide toast messages after a certain amount of time
   useEffect(() => {
     let timer;
     if (toast.show) {
-      timer = setTimeout(
-        () => setToast({ show: false, message: "", type: "" }),
-        2000
-      );
+      timer = setTimeout(() => {
+        setToast({ show: false, message: "", type: "" });
+      }, 3000); // 3 seconds for the toast message
     }
     return () => clearTimeout(timer);
   }, [toast.show]);
@@ -23,25 +24,33 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
+    // Simulate a login check with localStorage or any other logic
     setTimeout(() => {
       setLoading(false);
 
-      // Check localStorage for user
+      // For this example, we're storing the "user" in localStorage
       const storedUser = JSON.parse(localStorage.getItem("user"));
 
       if (storedUser && storedUser.email === email && storedUser.password === password) {
+        // Store user info in localStorage
+        localStorage.setItem("user", JSON.stringify({ email, password }));
+
         setToast({
           show: true,
           message: "Login successful! Redirecting...",
           type: "success",
         });
+
+        // Reset form fields
         setEmail("");
         setPassword("");
+
+        // After success, redirect to home or dashboard
         setTimeout(() => navigate("/"), 1500);
       } else {
         setToast({
           show: true,
-          message: "Invalid credentials",
+          message: "Invalid credentials. Please try again.",
           type: "danger",
         });
       }
@@ -50,7 +59,7 @@ function Login() {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center mt-2"
       style={{
         minHeight: "100vh",
         background: "linear-gradient(135deg, #0b0c10 0%, #1f2833 100%)",
@@ -73,6 +82,7 @@ function Login() {
           Login
         </h2>
 
+        {/* Login Form */}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label fw-semibold text-primary">Email</label>
@@ -113,6 +123,7 @@ function Login() {
           </button>
         </form>
 
+        {/* Toast message for feedback */}
         {toast.show && (
           <div
             className={`toast show align-items-center text-bg-${toast.type} border-0 mt-3 w-100`}
@@ -130,4 +141,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
