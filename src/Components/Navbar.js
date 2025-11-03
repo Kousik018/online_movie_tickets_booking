@@ -1,30 +1,24 @@
+// Navbar.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar as BsNav, Container, Nav, Button } from "react-bootstrap";
 import cinestream from "../Images/cinestream.jpg";
+import { isLoggedIn, logout, subscribe } from "../utils/auth";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [logged, setLogged] = useState(isLoggedIn());
   const navigate = useNavigate();
 
-  // Check login state when Navbar mounts or when localStorage changes
   useEffect(() => {
-    const checkLogin = () => {
-      const user = localStorage.getItem("user");
-      setIsLoggedIn(!!user);
-    };
-
-    checkLogin();
-
-    // Listen for localStorage changes (even across tabs or routes)
-    window.addEventListener("storage", checkLogin);
-
-    return () => window.removeEventListener("storage", checkLogin);
+    // subscribe returns an unsubscribe function
+    const unsubscribe = subscribe((newState) => {
+      setLogged(Boolean(newState));
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
+    logout();
     navigate("/login");
   };
 
@@ -47,8 +41,7 @@ export default function Navbar() {
             <Nav.Link as={Link} to="/movies">Movies</Nav.Link>
             <Nav.Link as={Link} to="/my-bookings">My Bookings</Nav.Link>
 
-            {/* Conditional rendering */}
-            {!isLoggedIn ? (
+            {!logged ? (
               <>
                 <Button as={Link} to="/signup" variant="primary" className="ms-2">
                   Sign Up
@@ -58,11 +51,7 @@ export default function Navbar() {
                 </Button>
               </>
             ) : (
-              <Button
-                variant="danger"
-                className="ms-2"
-                onClick={handleLogout}
-              >
+              <Button variant="danger" className="ms-2" onClick={handleLogout}>
                 Logout
               </Button>
             )}
@@ -72,5 +61,6 @@ export default function Navbar() {
     </BsNav>
   );
 }
+
 
 
